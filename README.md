@@ -1,116 +1,83 @@
-# **Simulador M/M/1 con Cadena de Markov — Investigación Operativa**
+# Simulador M/M/1 con Cadena de Markov
 
-## **Descripción del Proyecto**
-
-Este proyecto implementa un **modelo de línea de espera (cola) M/M/1** donde el tiempo de servicio depende del **tipo de turista**, el cual evoluciona según una **cadena de Markov de dos estados**.
-
-El sistema modela un **Centro de Información Turística** que recibe turistas en busca de orientación. Cada turista puede ser:
-- **Paciente**: tolera esperas largas y coopera durante la atención (μ = 6 clientes/min)
-- **Impaciente**: se irrita fácilmente y necesita más tiempo de atención (μ = 4 clientes/min)
-
-El tipo de turista no es completamente aleatorio, sino que depende del tipo anterior según una cadena de Markov discreta con matriz de transición:
-
-```
-P = [[0.7, 0.3],    # Paciente → [Paciente, Impaciente]
-     [0.5, 0.5]]    # Impaciente → [Paciente, Impaciente]
-```
+**Proyecto:** Investigación Operativa - Problema 5: Centro de Información Turística  
+**Institución:** Universidad Austral de Chile  
+**Curso:** Ingeniería Civil en Informática  
 
 ---
 
-## **Objetivos de la Tarea**
+## Descripción del Problema
 
-Este trabajo integra conceptos centrales del ramo de **Investigación Operativa**:
-
-### **Tareas Implementadas**
-
-✅ **a) Calcular π estacionaria de la cadena de Markov**
-- Implementado en `src/markov.py`
-- Método: `MarkovChain.get_stationary_distribution()`
-- Cálculo mediante valores propios de P^T
-
-✅ **b) Implementar cálculo ponderado de ρ, L y W**
-- Implementado en `src/queue_theory.py`
-- Clase: `MMOneQueue`
-- Calcula métricas analíticas usando distribución estacionaria π
-
-✅ **c) Simulador Python para 1000 periodos**
-- Implementado en `src/simulator.py`
-- Clase: `TouristCenterSimulator`
-- Registra:
-  - N(t): número total de turistas en el sistema
-  - Tipo de turista actual (Paciente/Impaciente)
-  - Estado del sistema (estable/inestable)
-
-✅ **d) Conclusiones basadas en simulaciones repetidas**
-- Incluidas en el informe PDF
-- Análisis de convergencia, variabilidad y comportamiento estacionario
+Sistema de cola M/M/1 para un centro de información turística donde:
+- Llegadas: Proceso Poisson con λ = 5 clientes/min
+- Tipos de turistas:
+  - **Paciente**: μ = 6 clientes/min (tolera esperas)
+  - **Impaciente**: μ = 4 clientes/min (requiere más atención)
+- El tipo de turista evoluciona según cadena de Markov con matriz:
+  ```
+  P = [[0.7, 0.3],
+       [0.5, 0.5]]
+  ```
 
 ---
 
-## **Estructura del Proyecto**
+## Requisitos Técnicos
 
-```
-io-trabajo/
-├── main.py                    # Punto de entrada del programa
-├── requirements.txt           # Dependencias del proyecto
-├── Tarea_Colas_Markov_7.pdf   # Enunciado de la tarea
-├── README.md                  # Este archivo
-├── LICENSE                    # Licencia Apache 2.0
-├── .gitignore                 # Archivos a ignorar
-├── run_tests.py               # Script para ejecutar todos los tests
-│
-├── src/                       # Código fuente
-│   ├── __init__.py
-│   ├── gui.py                 # Interfaz gráfica con PyQt5
-│   ├── markov.py              # Cadenas de Markov (π estacionaria)
-│   ├── queue_theory.py        # Modelos analíticos M/M/1
-│   └── simulator.py           # Simulación por eventos discretos
-│
-└── tests/                     # Tests unitarios
-    ├── __init__.py
-    ├── test_markov.py         # Tests para cadena de Markov
-    ├── test_queue_theory.py   # Tests para teoría de colas
-    ├── test_simulator.py      # Tests para simulador
-    └── test_integration.py    # Tests de integración completa
-```
+### Python
+- **Versión requerida:** Python 3.8 o superior
+- **Recomendado:** Python 3.10-3.12
 
----
+### Dependencias
 
-## **Requisitos Técnicos**
+| Librería | Versión | Uso |
+|----------|---------|-----|
+| numpy | 2.3.5 | Cálculos numéricos, variables aleatorias |
+| pandas | 2.3.3 | Almacenamiento y análisis de datos |
+| matplotlib | 3.10.7 | Generación de gráficos |
+| scipy | 1.16.3 | Funciones científicas |
+| PyQt5 | 5.15.11 | Interfaz gráfica (opcional) |
 
-### **Versión de Python**
-- **Python 3.8+** (recomendado: 3.10-3.12)
-
-### **Dependencias**
-
-El proyecto utiliza las siguientes librerías:
-
-| Librería | Versión | Propósito |
-|----------|---------|-----------|
-| `numpy` | 2.3.5 | Cálculos numéricos, generación de variables aleatorias |
-| `pandas` | 2.3.3 | Manipulación de datos, almacenamiento de resultados |
-| `matplotlib` | 3.10.7 | Generación de gráficos y visualizaciones |
-| `scipy` | 1.16.3 | Funciones científicas avanzadas |
-| `PyQt5` | 5.15.11 | Interfaz gráfica de usuario |
-| `pillow` | 12.0.0 | Procesamiento de imágenes para GUI |
-
-**Instalación automática:**
-
+**Instalación:**
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## **Instalación del Entorno**
+## Estructura del Proyecto
 
-### **En Ubuntu (PEP 668)**
+```
+io-trabajo/
+├── main.py                    # Punto de entrada
+├── requirements.txt           # Dependencias
+├── README.md                  # Este archivo
+├── Tarea_Colas_Markov_7.pdf   # Enunciado
+├── run_tests.py               # Ejecutor de tests
+│
+├── src/
+│   ├── __init__.py
+│   ├── markov.py              # Cadena de Markov
+│   ├── queue_theory.py        # Métricas M/M/1
+│   ├── simulator.py           # Simulación por eventos discretos
+│   └── gui.py                 # Interfaz gráfica (PyQt5)
+│
+└── tests/
+    ├── __init__.py
+    ├── test_markov.py
+    ├── test_queue_theory.py
+    ├── test_simulator.py
+    └── test_integration.py
+```
 
-Ubuntu bloquea `pip` global por seguridad, por lo que es **NECESARIO usar un entorno virtual**:
+---
+
+## Instalación
+
+### Opción 1: Ubuntu/Linux
 
 ```bash
 # Instalar soporte para entornos virtuales
-sudo apt install python3.12-venv
+sudo apt install python3-venv
 
 # Crear entorno virtual
 python3 -m venv .venv
@@ -122,7 +89,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### **En Windows**
+### Opción 2: Windows
 
 ```bash
 # Crear entorno virtual
@@ -135,7 +102,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### **En macOS**
+### Opción 3: macOS
 
 ```bash
 # Crear entorno virtual
@@ -150,280 +117,207 @@ pip install -r requirements.txt
 
 ---
 
-## **Ejecución del Proyecto**
+## Instrucciones de Ejecución
 
-### **1. Modo GUI (Recomendado)**
-
-```bash
-python3 main.py
-```
-
-La interfaz gráfica permite:
-- ✨ Ingresar parámetros (λ, μ_paciente, μ_impaciente, número de turistas)
-- 🚀 Ejecutar simulación sin bloquear la ventana (QThread)
-- 📊 Ver gráfico N(t) en tiempo real
-- 📈 Análisis adicional (histogramas, evolución de tipos, boxplots)
-- 📋 Tabla comparativa de métricas teóricas vs simuladas
-- 🖥️ Consola con resultados detallados
-
-**Interfaz incluye:**
-- **Tab 1**: Configuración de parámetros
-- **Tab 2**: Gráfico N(t) principal
-- **Tab 3**: Análisis adicional (4 subgráficos)
-- **Tab 4**: Tabla de métricas
-- **Tab 5**: Resultados en formato texto
-
-### **2. Modo CLI (Línea de Comandos)**
+### Modo 1: Interfaz Gráfica (GUI)
 
 ```bash
-python3 main.py --cli
+python main.py
 ```
 
-Muestra en consola:
+**Funcionalidades:**
+- Modificar parámetros de entrada (λ, μ_paciente, μ_impaciente, N)
+- Ejecutar simulación con un clic
+- Visualizar gráfico N(t) en tiempo real
+- Ver tabla comparativa teórico vs. simulado
+- Análisis adicional (histogramas, evolución de tipos)
+
+### Modo 2: Línea de Comandos (CLI)
+
+```bash
+python main.py --cli
+```
+
+**Salida:**
 - Distribución estacionaria π
-- Métricas analíticas M/M/1 (ρ, L, W, Lq, Wq)
-- Métricas simuladas y comparación
-- Estadísticas adicionales
-- Genera gráfico `figures/n_t_evolution.png`
+- Métricas analíticas M/M/1
+- Resultados de simulación
+- Comparación con errores porcentuales
+- Gráfico guardado en `figures/n_t_evolution.png`
 
-### **3. Ejecutar Tests**
+### Modo 3: Ejecutar Tests
 
 ```bash
 # Todos los tests
-python3 run_tests.py
+python run_tests.py
 
 # Test individual
-python3 tests/test_markov.py
-python3 tests/test_queue_theory.py
-python3 tests/test_simulator.py
-python3 tests/test_integration.py
+python tests/test_markov.py
+python tests/test_queue_theory.py
+python tests/test_simulator.py
+python tests/test_integration.py
 ```
 
 ---
 
-## **Parámetros Configurables**
+## Parámetros Configurables
 
-El código permite cambiar todos los parámetros de entrada:
+Todos los parámetros pueden modificarse directamente en el código o mediante la GUI:
 
 ```python
-# En main.py o mediante GUI
 lambda_rate = 5.0           # Tasa de llegadas (clientes/min)
 mu_patient = 6.0            # Tasa servicio pacientes (clientes/min)
 mu_impatient = 4.0          # Tasa servicio impacientes (clientes/min)
-P = [[0.7, 0.3],           # Matriz de transición Markov
-     [0.5, 0.5]]
-n_tourists = 1000          # Número de turistas a simular
+n_tourists = 1000           # Número de turistas a simular
+
+# Matriz de transición Markov
+P = [[0.7, 0.3],            # Paciente → [Paciente, Impaciente]
+     [0.5, 0.5]]            # Impaciente → [Paciente, Impaciente]
 ```
 
-**Desde GUI**: Todos los parámetros son editables en la pestaña "Parámetros"
+**Para cambiar parámetros:**
+1. **GUI:** Editar campos en pestaña "Parámetros"
+2. **CLI:** Modificar valores en `main.py` (líneas 13-16)
+3. **Programático:** Crear instancias de clases con parámetros personalizados
 
 ---
 
-## **Modelo Matemático**
+## Supuestos del Modelo
 
-### **1. Cadena de Markov**
+### 1. Proceso de Llegadas
+- **Supuesto:** Los turistas llegan según un proceso Poisson con tasa λ = 5 clientes/min
+- **Implicación:** Tiempos entre llegadas son exponenciales independientes
+- **Justificación:** Modelo estándar M/M/1 para llegadas aleatorias
 
-La distribución estacionaria π satisface:
+### 2. Tipos de Turistas - Cadena de Markov
+- **Supuesto:** El tipo de turista NO es independiente del anterior
+- **Modelo:** Cadena de Markov de 2 estados (Paciente/Impaciente)
+- **Matriz de transición:** P dada en el enunciado
+- **Justificación:** Un turista paciente genera ambiente que atrae pacientes; un impaciente contagia impaciencia
 
-```
-π · P = π
-π₁ + π₂ = 1
-```
+### 3. Tiempos de Servicio
+- **Supuesto:** Exponenciales condicionados al tipo de turista
+  - Paciente: μ_P = 6 clientes/min
+  - Impaciente: μ_I = 4 clientes/min
+- **Tasa efectiva:** Se pondera con distribución estacionaria π
+- **Cálculo:** μ_eff = 1 / (π_P/μ_P + π_I/μ_I)
 
-Solución para P = [[0.7, 0.3], [0.5, 0.5]]:
-```
-π = [0.625, 0.375]
-```
+### 4. Sistema de Cola
+- **Tipo:** M/M/1 (un servidor, cola infinita)
+- **Disciplina:** FIFO (First In, First Out)
+- **Capacidad:** Ilimitada (no se rechaza a nadie)
+- **Abandono:** No hay (nadie se va sin ser atendido)
 
-### **2. Tiempo de Servicio Efectivo**
+### 5. Condición Inicial
+- **Supuesto:** Sistema comienza vacío: N(0) = 0
+- **Implicación:** Simulación captura régimen transitorio
+- **Consecuencia:** Métricas simuladas difieren de teoría estacionaria para N pequeños
 
-```
-E[S] = π_p · (1/μ_p) + π_i · (1/μ_i)
-μ_eff = 1 / E[S]
-```
+### 6. Distribución Estacionaria π
+- **Cálculo:** Resolviendo π·P = π y Σπ_i = 1
+- **Resultado:** π = [0.625, 0.375]
+- **Uso:** Ponderar tiempos de servicio para calcular μ_eff
 
-Con los parámetros del problema:
-```
-E[S] = 0.625·(1/6) + 0.375·(1/4) = 0.1979 min
-μ_eff = 5.052 clientes/min
-```
+### 7. Estabilidad del Sistema
+- **Condición:** ρ = λ/μ_eff < 1
+- **Con parámetros dados:** ρ ≈ 0.9896 < 1 (estable, pero muy saturado)
+- **Nota:** Alta utilización (99%) causa convergencia lenta al estado estacionario
 
-### **3. Métricas M/M/1**
-
-```
-ρ = λ / μ_eff                    # Utilización del servidor
-L = ρ / (1 - ρ)                  # Clientes en sistema
-W = 1 / (μ_eff - λ)             # Tiempo en sistema
-Lq = ρ² / (1 - ρ)               # Clientes en cola
-Wq = ρ / (μ_eff - λ)            # Tiempo en cola
-```
-
-### **4. Ley de Little**
-
-```
-L = λ · W
-Lq = λ · Wq
-```
-
----
-
-## **Supuestos del Modelo**
-
-### **1. Proceso de Llegadas**
-- Los turistas llegan según un **proceso Poisson** con tasa λ = 5 clientes/min
-- Los tiempos entre llegadas son **exponenciales** con media 1/λ
-
-### **2. Cadena de Markov**
-- Los tipos de turistas **no son independientes**
-- Se modela con cadena de Markov de 2 estados (Paciente/Impaciente)
-- La transición sigue la matriz P dada
-
-### **3. Tiempos de Servicio**
-- **Exponencial** condicionado al tipo de turista
-- μ_paciente = 6 clientes/min
-- μ_impaciente = 4 clientes/min
-- La tasa efectiva se pondera con π
-
-### **4. Sistema M/M/1**
-- **Un solo servidor**
-- Disciplina **FIFO** (First In, First Out)
-- **Cola de capacidad infinita**
-- **Nadie abandona** el sistema
-
-### **5. Estabilidad**
-El sistema es estable si:
-```
-ρ = λ / μ_eff < 1
-```
-
-Con los parámetros del problema:
-```
-ρ = 5 / 5.052 ≈ 0.99 (estable, pero muy cercano al límite)
-```
-
-### **6. Simulación**
-- **Eventos discretos**: llegadas y salidas
-- Tiempos de llegada generados con `np.random.exponential(1/λ)`
-- Tiempos de servicio según tipo de turista
-- N(t) calculado mediante método del área (integración numérica)
+### 8. Simulación por Eventos Discretos
+- **Eventos:** Llegadas (+1 cliente) y Salidas (-1 cliente)
+- **N(t):** Calculado mediante método del área (integración numérica)
+- **Métricas:** Ley de Little (L = λ·W) y método del área
+- **Reproducibilidad:** Semillas aleatorias permiten replicar resultados
 
 ---
 
-## **Resultados de la Simulación**
+## Outputs del Simulador
 
-El DataFrame final incluye las siguientes columnas:
+### Console Output (CLI)
+```
+Distribución estacionaria π:
+  Paciente: 0.6250
+  Impaciente: 0.3750
+
+Métricas M/M/1 ponderadas:
+  rho: 0.9896
+  L: 95.00
+  W: 19.00
+  Lq: 94.01
+  Wq: 18.80
+
+Métricas simuladas:
+  L (clientes en sistema): 15.73
+  W (tiempo en sistema): 3.17 min
+  ...
+```
+
+### DataFrame Resultados
+Columnas incluidas en `results`:
 
 | Columna | Descripción |
 |---------|-------------|
-| `turista` | ID del turista (1, 2, 3, ...) |
-| `tiempo_llegada` | Tiempo absoluto de llegada al sistema |
-| `tiempo_inicio_servicio` | Momento en que inicia el servicio |
-| `tiempo_salida` | Momento en que abandona el sistema |
-| `tipo` | "Paciente" o "Impaciente" |
-| `estado` | 0 (Paciente) o 1 (Impaciente) |
-| `tiempo_servicio` | Duración del servicio |
-| `tiempo_espera` | Tiempo en cola esperando |
-| `tiempo_en_sistema` | Tiempo total (espera + servicio) |
-| `n_sistema` | N(t): turistas en sistema al llegar |
+| turista | ID del turista (1, 2, 3, ...) |
+| tiempo_llegada | Tiempo de llegada al sistema |
+| tiempo_inicio_servicio | Cuándo inicia el servicio |
+| tiempo_salida | Cuándo sale del sistema |
+| tipo | "Paciente" o "Impaciente" |
+| estado | 0 (Paciente) o 1 (Impaciente) |
+| tiempo_servicio | Duración del servicio |
+| tiempo_espera | Tiempo en cola |
+| tiempo_en_sistema | Tiempo total (espera + servicio) |
+| n_sistema | N(t) al momento de llegar |
 
-**Atributos adicionales** (guardados en `results.attrs`):
+**Atributos adicionales** (`results.attrs`):
 - `L_simulated`: Clientes promedio en sistema
 - `W_simulated`: Tiempo promedio en sistema
 - `Lq_simulated`: Clientes promedio en cola
 - `Wq_simulated`: Tiempo promedio en cola
-- `N_steady_state`: N(t) en estado estacionario (últimos 20%)
+- `N_steady_state`: N(t) en últimos 20%
 - `lambda_empirical`: Tasa de llegadas empírica
 - `total_time`: Tiempo total de simulación
 
+### Gráficos Generados
+- **CLI:** `figures/n_t_evolution.png` (evolución de N(t))
+- **GUI:** Visualización interactiva en ventana
+
 ---
 
-## **Tests Implementados**
+## Validación del Código
 
-### **Tests Unitarios**
+El código incluye tests automatizados que verifican:
 
-1. **test_markov.py**: Verifica cadena de Markov
-   - Distribución estacionaria π
-   - Propiedad π·P = π
-   - Generación de estados
+### Tests de Markov (`test_markov.py`)
+- ✅ π suma 1
+- ✅ π·P = π (propiedad estacionaria)
+- ✅ Generación correcta de estados
 
-2. **test_queue_theory.py**: Verifica métricas analíticas
-   - Cálculo de μ efectiva
-   - Métricas M/M/1 (L, W, Lq, Wq)
-   - Detección de inestabilidad (ρ ≥ 1)
-   - Ley de Little
+### Tests de Teoría de Colas (`test_queue_theory.py`)
+- ✅ Cálculo de μ_eff ponderada
+- ✅ Métricas M/M/1 (L, W, Lq, Wq)
+- ✅ Detección de inestabilidad (ρ ≥ 1)
+- ✅ Ley de Little
 
-3. **test_simulator.py**: Verifica simulación
-   - Estructura del DataFrame
-   - Distribución de tipos según π
-   - Disciplina FIFO
-   - Cálculo de N(t)
-   - Consistencia de métricas
+### Tests del Simulador (`test_simulator.py`)
+- ✅ Estructura del DataFrame
+- ✅ Distribución de tipos coincide con π
+- ✅ Disciplina FIFO respetada
+- ✅ Consistencia interna (Ley de Little)
 
-4. **test_integration.py**: Tests de integración
-   - Sistema completo con parámetros del problema
-   - Reproducibilidad con semillas fijas
-   - Diferentes escenarios de carga
-   - Estado estacionario
+### Tests de Integración (`test_integration.py`)
+- ✅ Sistema completo funciona correctamente
+- ✅ Reproducibilidad con semillas
+- ✅ Diferentes escenarios de carga
 
-### **Ejecutar Tests**
-
+**Ejecutar todos los tests:**
 ```bash
-# Todos los tests
-python3 run_tests.py
-
-# Resultado esperado:
-# [PASS] Test 1: Cadena de Markov
-# [PASS] Test 2: Teoría de Colas M/M/1
-# [PASS] Test 3: Simulador
-# [PASS] Test 4: Integración Completa
-# Total: 4/4 tests pasaron
+python run_tests.py
+# Resultado esperado: 4/4 tests pasaron
 ```
 
 ---
 
-## **Entregables**
-
-### ✅ **1. Código Python** (`src/*.py`)
-- **Comentado**: Todas las funciones tienen docstrings
-- **Modular**: Separado en módulos independientes
-- **Parametrizable**: Todos los parámetros son configurables
-- **Testeado**: 4 archivos de tests con >20 casos de prueba
-
-### ✅ **2. Informe en PDF**
-Contiene:
-- **Portada**: Título, integrantes, fecha
-- **Índice**: Estructura del documento
-- **Introducción**: Descripción del problema
-- **Resultados**: Métricas teóricas y simuladas
-- **Gráficos**: N(t), histogramas, evolución de tipos
-- **Conclusiones**: Análisis del comportamiento del sistema
-
-### ✅ **3. README.md** (este archivo)
-Incluye:
-- Instrucciones de instalación
-- Cómo ejecutar el código (GUI y CLI)
-- Documentación de parámetros
-- Descripción de supuestos
-- Explicación del modelo matemático
-
----
-
-## **Relación con Investigación Operativa**
-
-| Contenido IO | Implementación en el Proyecto |
-|-------------|-------------------------------|
-| **Cadenas de Markov** | Matriz P, cálculo de π, evolución del tipo de turista |
-| **Líneas de Espera** | Modelo M/M/1 con parámetros efectivos ponderados |
-| **Simulación** | Eventos discretos, generación de tiempos, N(t) |
-| **Estabilidad** | Análisis de ρ, estado estacionario empírico |
-| **Ley de Little** | Verificación de L = λ·W y Lq = λ·Wq |
-| **Modelos Probabilísticos** | Distribuciones exponenciales y Poisson |
-
----
-
-## **Ejemplo de Uso**
-
-### **Ejecutar simulación desde código**
+## Ejemplo de Uso Programático
 
 ```python
 from src.markov import MarkovChain
@@ -436,76 +330,104 @@ mu_patient = 6.0
 mu_impatient = 4.0
 P = [[0.7, 0.3], [0.5, 0.5]]
 
-# Cadena de Markov
+# 1. Cadena de Markov
 markov = MarkovChain(P)
 pi = markov.get_stationary_distribution()
-print(f"π = {pi}")
+print(f"π = {pi}")  # {'Paciente': 0.625, 'Impaciente': 0.375}
 
-# Métricas analíticas
+# 2. Métricas analíticas
 queue = MMOneQueue(lambda_rate, mu_patient, mu_impatient, markov.pi)
 metrics = queue.calculate_metrics()
-print(f"ρ = {metrics['rho']:.4f}")
-print(f"L = {metrics['L']:.2f}")
+print(f"ρ = {metrics['rho']:.4f}")  # 0.9896
+print(f"L = {metrics['L']:.2f}")     # 95.00
 
-# Simulación
+# 3. Simulación
 simulator = TouristCenterSimulator(lambda_rate, mu_patient, mu_impatient, markov)
 results = simulator.simulate(1000)
-print(f"L simulado = {results.attrs['L_simulated']:.2f}")
+
+# 4. Resultados
+print(f"L simulado = {results.attrs['L_simulated']:.2f}")  # 15.73
+print(f"Proporción pacientes = {(results['tipo']=='Paciente').mean():.4f}")  # 0.6260
 ```
 
 ---
 
-## **Notas Importantes**
+## Notas Importantes
 
-### **⚠️ Alta Utilización (ρ ≈ 0.99)**
+### 1. Alta Utilización (ρ ≈ 0.99)
+- El sistema opera al 99% de capacidad
+- Causa alta variabilidad en resultados
+- Convergencia lenta al estado estacionario
+- Diferencias entre teoría y simulación son esperadas para N=1,000
 
-Con los parámetros del problema:
-- ρ = 5 / 5.052 ≈ **0.99** (muy cerca del límite de estabilidad)
-- Esto genera **alta variabilidad** en las métricas
-- Se requieren simulaciones **largas** (>5000 turistas) para buena convergencia
-- Diferencias del **10-20%** entre teoría y simulación son esperables
+### 2. Régimen Transitorio
+- Simulaciones de N=1,000 capturan fase inicial (transitoria)
+- Para alcanzar estado estacionario se requieren N>50,000
+- Métricas simuladas (L≈15) representan primeras horas de operación
+- Métricas teóricas (L≈95) representan comportamiento a largo plazo
 
-### **📊 Convergencia**
-
-Para mejor convergencia:
-- Usar `n_tourists >= 5000`
-- Analizar solo el estado estacionario (últimos 20-30%)
-- Ejecutar múltiples réplicas y promediar
-
-### **🔬 Validación**
-
-El sistema ha sido validado con:
-- ✅ Tests unitarios automatizados
-- ✅ Verificación de Ley de Little
-- ✅ Comparación con teoría M/M/1
-- ✅ Distribución de tipos coincide con π
+### 3. Reproducibilidad
+- Tests usan semillas aleatorias fijas
+- Para replicar resultados exactos, usar misma semilla
+- Ejemplo: `np.random.seed(42)` antes de simular
 
 ---
 
-## **Referencias**
+## Solución de Problemas
+
+### Error: ModuleNotFoundError
+```bash
+# Asegurarse de estar en el entorno virtual
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
+
+# Reinstalar dependencias
+pip install -r requirements.txt
+```
+
+### Error: No se puede importar PyQt5 (GUI)
+```bash
+# Instalar PyQt5 manualmente
+pip install PyQt5
+
+# Alternativa: usar solo modo CLI
+python main.py --cli
+```
+
+### Gráficos no se muestran
+```bash
+# Verificar backend de matplotlib
+python -c "import matplotlib; print(matplotlib.get_backend())"
+
+# Si es necesario, cambiar backend
+export MPLBACKEND=TkAgg  # Linux/Mac
+set MPLBACKEND=TkAgg     # Windows
+```
+
+---
+
+## Autores
+
+- Bastián Gajardo
+- Benjamín Martínez
+- Cristóbal Skillmann
+- Katherine Zapata
+
+**Profesor:** Tania Letelier  
+**Institución:** Universidad Austral de Chile  
+**Curso:** Investigación Operativa  
+**Fecha:** 24 Noviembre 2025
+
+---
+
+## Licencia
+
+Apache License 2.0 - Ver archivo `LICENSE` para detalles.
+
+---
+
+## Referencias
 
 - Hillier & Lieberman — *Introducción a la Investigación de Operaciones*
 - Gross & Harris — *Fundamentals of Queueing Theory*
-- Winston — *Operations Research*
 - Norris — *Markov Chains*
-
----
-
-## **Licencia**
-
-Este proyecto está bajo la licencia Apache 2.0. Ver archivo `LICENSE` para más detalles.
-
----
-
-## **Autores**
-
-Trabajo realizado para el curso de **Investigación Operativa**.
-
--Bastian Gajardo
--Benjamin Martinez
--Cristobal Skillmann
--Katherine Zapata
-
-**Fecha**: 24/11/2025
-
----
