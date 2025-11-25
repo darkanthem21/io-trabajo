@@ -1,4 +1,3 @@
-# src/simulator.py - Simulación de eventos discretos M/M/1 con Cadena de Markov
 import numpy as np
 import pandas as pd
 
