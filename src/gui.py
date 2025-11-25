@@ -1,3 +1,4 @@
+import os
 import sys
 
 import numpy as np
@@ -337,6 +338,9 @@ class MainWindow(QMainWindow):
         self.canvas.axes.grid(True, alpha=0.3)
         self.canvas.draw()
 
+        os.makedirs("figures", exist_ok=True)
+        self.canvas.figure.savefig("figures/gui_main_plot.png")
+
         # Gráficos de análisis adicional
         self.update_analysis_plots(results, pi_dist, metrics)
 
@@ -477,6 +481,8 @@ Distribución de tipos:
         # Ajustar espaciado
         self.analysis_canvas.fig.tight_layout()
         self.analysis_canvas.draw()
+        os.makedirs("figures", exist_ok=True)
+        self.analysis_canvas.fig.savefig("figures/gui_analysis_plots.png")
 
     def update_metrics_table(self, pi_dist, metrics, results):
         L_sim = results.attrs.get("L_simulated", 0)
